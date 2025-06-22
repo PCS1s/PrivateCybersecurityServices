@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PersonnalCybersecurityServices</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #0f111a;
+      color: #e0e6f3;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: #4fd1c5;
+      text-decoration: none;
+      transition: color 0.25s ease-in-out;
+      outline-offset: 2px;
+    }
+    a:hover,
+    a:focus {
+      color: #81e6d9;
+      outline: none;
+    }
+
+    h1, h2, h3, h4 {
+      margin-top: 0;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #cbd5e1;
+    }
+
+    p {
+      margin-top: 0;
+      color: #a0aec0;
+    }
+
+    button {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+      background: #4fd1c5;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(79, 209, 197, 0.4);
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background: #38b2ac;
+      outline: none;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(56, 178, 172, 0.6);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 7px rgba(38, 137, 131, 0.5);
+    }
+    button:focus-visible {
+      outline: 3px solid #81e6d9;
+      outline-offset: 3px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: saturate(180%) blur(12px);
+      background-color: rgba(15, 17, 26, 0.9);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #1a202c80;
+      z-index: 999;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    .logo {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      font-weight: 900;
+      color: #4fd1c5;
+      user-select: none;
+    }
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 0;
+      position: relative;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background: #4fd1c5;
+      transition: width 0.3s ease;
+      border-radius: 4px;
+    }
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 100%;
+    }
+
+    /* Hamburger button for mobile */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: #4fd1c5;
+      transition: color 0.3s ease;
+    }
+    .hamburger:focus-visible {
+      outline: 3px solid #81e6d9;
+      outline-offset: 3px;
+    }
+    .hamburger svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 64px);
+      background: rgba(15, 17, 26, 0.95);
+      backdrop-filter: saturate(180%) blur(12px);
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.6);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 1000;
+    }
+    .mobile-nav.open {
+      transform: translateX(0);
+    }
+    .mobile-nav a {
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #4fd1c5;
+      transition: background-color 0.25s ease;
+    }
+    .mobile-nav a:hover,
+    .mobile-nav a:focus {
+      background-color: #274749;
+      outline: none;
+    }
+
+    /* Overlay behind mobile nav */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 900;
+    }
+    .overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 80px;
+      text-align: center;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: #4fd1c5;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      max-width: 640px;
+      margin: 0 auto 40px auto;
+      color: #a0aec0;
+      line-height: 1.6;
+    }
+
+    /* Features Section */
+    .features {
+      background: #121724;
+      padding: 80px 0;
+    }
+    .features .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 36px;
+    }
+    .feature-card {
+      background: rgba(79, 209, 197, 0.1);
+      border-radius: 16px;
+      padding: 36px 24px;
+      box-shadow: 0 8px 16px rgba(79, 209, 197, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .feature-card:hover,
+    .feature-card:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(79, 209, 197, 0.4);
+      outline: none;
+    }
+    .feature-icon {
+      font-family: 'Material Icons';
+      font-size: 48px;
+      color: #4fd1c5;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #d9f8f5;
+    }
+    .feature-desc {
+      font-size: 1rem;
+      color: #a0aec0;
+      line-height: 1.4;
+    }
+
+    /* News Section - placeholder cards */
+    .news {
+      padding: 80px 0;
+    }
+    .news h2 {
+      text-align: center;
+      color: #4fd1c5;
+      margin-bottom: 48px;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 900;
+    }
+    .news-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .news-item {
+      background: #1a1f2d;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .news-item:hover,
+    .news-item:focus-within {
+      box-shadow: 0 16px 40px rgba(79, 209, 197, 0.5);
+      outline: none;
+    }
+    .news-image img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .news-content {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .news-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #d9f8f5;
+      margin-bottom: 12px;
+    }
+    .news-summary {
+      font-size: 1rem;
+      color: #a0aec0;
+      flex-grow: 1;
+      line-height: 1.4;
+    }
+    .news-date {
+      font-size: 0.875rem;
+      color: #6b7a8f;
+      margin-top: 16px;
+      user-select: none;
+    }
+
+    /* Footer */
+    footer {
+      background: #0c111a;
+      color: #718096;
+      padding: 48px 24px 24px;
+      margin-top: auto;
+      border-top: 1px solid #1a202c;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+    }
+    .footer-section h4 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #4fd1c5;
+      margin-bottom: 16px;
+      user-select: none;
+    }
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-section ul li {
+      margin-bottom: 12px;
+    }
+    .footer-section ul li a {
+      color: #718096;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+    .footer-section ul li a:hover,
+    .footer-section ul li a:focus {
+      color: #81e6d9;
+      outline: none;
+    }
+    .social-icons {
+      display: flex;
+      gap: 16px;
+    }
+    .social-icons a {
+      font-family: 'Material Icons';
+      font-size: 28px;
+      color: #718096;
+      transition: color 0.3s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+    .social-icons a:hover,
+    .social-icons a:focus {
+      color: #4fd1c5;
+      outline: none;
+    }
+
+    /* Responsive layout adjustments */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+      .hero {
+        padding: 80px 16px 50px;
+      }
+      .features .container {
+        grid-template-columns: 1fr;
+      }
+      .news-list {
+        grid-template-columns: 1fr;
+      }
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 480px) {
+      footer {
+        padding: 40px 16px 16px;
+      }
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+  </style>
+
+  <script src="//code.jivosite.com/widget/ws6MIj59mG" async></script>
+</head>
+<body>
+  <header role="banner">
+    <div class="header-inner container">
+      <a href="#" class="logo" aria-label="SecureNet home">P.C.S</a>
+      <nav role="navigation" aria-label="Primary Navigation">
+        <a href="#home" tabindex="0">Home</a>
+        <a href="#services" tabindex="0">Services</a>
+        <a href="#solutions" tabindex="0">Solutions</a>
+        <a href="https://pcs1s.github.io/about/" tabindex="0">About</a>
+        <a href="https://pcs1s.github.io/re2/" tabindex="0">Contact</a>
+      </nav>
+      <button aria-controls="mobile-navigation" aria-expanded="false" class="hamburger" id="hamburger-button" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile Navigation" hidden>
+    <a href="#home" tabindex="0">Home</a>
+    <a href="#services" tabindex="0">Services</a>
+    <a href="#solutions" tabindex="0">Solutions</a>
+    <a href="https://pcs1s.github.io/about/" tabindex="0">About</a>
+    <a href="https://pcs1s.github.io/re2/" tabindex="0">Contact</a>
+  </nav>
+  <div class="overlay" tabindex="-1" hidden></div>
+
+  <main role="main">
+    <section class="hero" id="home" tabindex="-1">
+      <h1>Cybersecurity Solutions to Protect Your Digital World</h1>
+      <p>
+        SecureNet offers enterprise-grade cybersecurity services to safeguard your business from evolving digital threats across all platforms.
+      </p>
+      <button type="button" ><a href="https://pcs1s.github.io/re2/" target="_self" data-type="url"> Get Started</button>
+    </section>
+
+    <section class="features container" id="services" tabindex="-1" aria-label="Core Security Services">
+      <article class="feature-card" tabindex="0" role="article" aria-labelledby="feat-firewall-title" aria-describedby="feat-firewall-desc">
+        <span class="feature-icon material-icons" aria-hidden="true">security</span>
+        <h3 id="feat-firewall-title" class="feature-title">Advanced Firewall Protection</h3>
+        <p id="feat-firewall-desc" class="feature-desc">
+          State-of-the-art firewall systems that prevent unauthorized access and monitor traffic in real-time, protecting your network perimeter.
+        </p>
+      </article>
+
+      <article class="feature-card" tabindex="0" role="article" aria-labelledby="feat-risk-title" aria-describedby="feat-risk-desc">
+        <span class="feature-icon material-icons" aria-hidden="true">assessment</span>
+        <h3 id="feat-risk-title" class="feature-title">Risk Assessment & Auditing</h3>
+        <p id="feat-risk-desc" class="feature-desc">
+          Comprehensive security risk assessments pinpoint vulnerabilities and offer actionable insights to mitigate cyber threats.
+        </p>
+      </article>
+
+      <article class="feature-card" tabindex="0" role="article" aria-labelledby="feat-incident-title" aria-describedby="feat-incident-desc">
+        <span class="feature-icon material-icons" aria-hidden="true">report_problem</span>
+        <h3 id="feat-incident-title" class="feature-title">Incident Response & Recovery</h3>
+        <p id="feat-incident-desc" class="feature-desc">
+          Rapid incident response teams ensure minimal downtime and provide in-depth forensic analysis to prevent future attacks.
+        </p>
+      </article>
+    </section>
+
+    <section class="news" id="solutions" tabindex="-1" aria-label="Latest Cybersecurity News and Insights">
+      <h2>Latest Cybersecurity News</h2>
+      <div class="news-list">
+        <article class="news-item" tabindex="0" role="article" aria-labelledby="news1-title" aria-describedby="news1-desc">
+          <div class="news-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8cb40c4a-6ef1-49b8-bd79-21453e6ce6ff.png" alt="Abstract digital shield and lock representing cyber attack report" loading="lazy" />
+          </div>
+          <div class="news-content">
+            <h3 id="news1-title" class="news-title">New Ransomware Tactics Detected in 2025</h3>
+            <p id="news1-desc" class="news-summary">
+              Researchers have uncovered sophisticated ransomware methods that bypass traditional detection mechanisms, urging companies to upgrade defenses.
+            </p>
+            <time class="news-date" datetime="2024-06-15">June 15, 2024</time>
+          </div>
+        </article>
+
+        <article class="news-item" tabindex="0" role="article" aria-labelledby="news2-title" aria-describedby="news2-desc">
+          <div class="news-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/128fa891-8436-4e57-a987-15031501ec42.png" alt="Lock and data icons representing data security and protection tips" loading="lazy" />
+          </div>
+          <div class="news-content">
+            <h3 id="news2-title" class="news-title">Top 10 Data Security Best Practices for 2025</h3>
+            <p id="news2-desc" class="news-summary">
+              Learn the essential practices to keep your business data secure from breaches, leaks, and accidental loss in the coming year.
+            </p>
+            <time class="news-date" datetime="2024-05-20">May 20, 2024</time>
+          </div>
+        </article>
+
+        <article class="news-item" tabindex="0" role="article" aria-labelledby="news3-title" aria-describedby="news3-desc">
+          <div class="news-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0c9fe5bb-7417-41d2-a870-3009d6e7e792.png" alt="Cloud with shield icon denoting cloud security solutions" loading="lazy" />
+          </div>
+          <div class="news-content">
+            <h3 id="news3-title" class="news-title">Cloud Security Innovations Accelerate in 2024</h3>
+            <p id="news3-desc" class="news-summary">
+              The latest advancements in cloud security help organizations secure their workloads while maximizing flexibility and compliance.
+            </p>
+            <time class="news-date" datetime="2024-04-10">April 10, 2024</time>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-container container">
+      <section class="footer-section" aria-labelledby="company-info-title">
+        <h4 id="company-info-title">Company</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#blog">Blog</a></li>
+        </ul>
+      </section>
+
+      <section class="footer-section" aria-labelledby="support-title">
+        <h4 id="support-title">Support</h4>
+        <ul>
+          <li><a href="#help-center">Help Center</a></li>
+          <li><a href="#contact">Contact Support</a></li>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#terms">Terms of Service</a></li>
+        </ul>
+      </section>
+
+      <section class="footer-section" aria-labelledby="legal-title">
+        <h4 id="legal-title">Legal</h4>
+        <ul>
+          <li><a href="#terms">Terms & Conditions</a></li>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#cookies">Cookie Policy</a></li>
+          <li><a href="#security">Security</a></li>
+        </ul>
+      </section>
+
+      <section class="footer-section" aria-labelledby="social-title">
+        <h4 id="social-title">Follow Us</h4>
+        <div class="social-icons" role="list">
+          <a href="https://twitter.com" aria-label="Twitter" role="listitem" target="_blank" rel="noopener noreferrer">twitter</a>
+          <a href="https://linkedin.com" aria-label="LinkedIn" role="listitem" target="_blank" rel="noopener noreferrer">linkedin</a>
+          <a href="https://github.com" aria-label="GitHub" role="listitem" target="_blank" rel="noopener noreferrer">github</a>
+          <a href="https://facebook.com" aria-label="Facebook" role="listitem" target="_blank" rel="noopener noreferrer">facebook</a>
+        </div>
+      </section>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const hamburgerBtn = document.getElementById('hamburger-button');
+      const mobileNav = document.getElementById('mobile-navigation');
+      const overlay = document.querySelector('.overlay');
+
+      function openMenu() {
+        mobileNav.hidden = false;
+        mobileNav.classList.add('open');
+        overlay.hidden = false;
+        overlay.classList.add('visible');
+        hamburgerBtn.setAttribute('aria-expanded', 'true');
+        hamburgerBtn.setAttribute('aria-label', 'Close menu');
+        // Trap focus inside mobile nav
+        mobileNav.querySelector('a').focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        mobileNav.classList.remove('open');
+        overlay.classList.remove('visible');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.setAttribute('aria-label', 'Open menu');
+        // Unlock scroll after animation delay
+        setTimeout(() => {
+          mobileNav.hidden = true;
+          overlay.hidden = true;
+          document.body.style.overflow = '';
+          hamburgerBtn.focus();
+        }, 300);
+      }
+
+      hamburgerBtn.addEventListener('click', () => {
+        if (mobileNav.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      overlay.addEventListener('click', closeMenu);
+
+      // Close menu on Escape key when open
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+          e.preventDefault();
+          closeMenu();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
+
